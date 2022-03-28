@@ -12,7 +12,6 @@ Aplikacja (BOT) stworzona na potrzeby nauki Python'a
   - **Python**:
       - Discord.py
       - Asyncio
-      - dotenv
 
 # Instalacja:
 
@@ -20,6 +19,6 @@ Zmień nazwe pliku z "**settings_example.ini**" na "**settings.ini**" oraz wprow
 ```
 # .env
 [APP]
-TOKEN = "**XYZ**"
+TOKEN = XYZ
 ```
 
