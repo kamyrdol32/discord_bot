@@ -1,20 +1,21 @@
 import asyncio
 import time
-
 import discord
+
+from main import commands, tasks
+
 from discord import Member
 from discord.ext.commands import Context
 
-from main import commands
 
-
-class SomeCommands(commands.Cog):
+class Commands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     ########################################
     ### COMMANDS
     ########################################
+    
     @commands.command(name="commands")
     @commands.cooldown(rate=1, per=30)
     async def help(self, ctx: commands.Context):
@@ -44,24 +45,25 @@ class SomeCommands(commands.Cog):
             await message.delete()
             return
 
+
     ########################################
     #### CLEAN
     ########################################
+
     @commands.command(name="clean")
     async def clear(self, ctx: commands.Context, *, text: str):
 
         deleted = await ctx.channel.purge(limit=int(text) + 1)
-
-        embed = discord.Embed(title="Czyszczenie kanału", description='Usunięto {} wiadomości'.format(len(deleted) - 1),
-                              colour=0xECB72D)
+        embed = discord.Embed(title="Czyszczenie kanału", description='Usunięto {} wiadomości'.format(len(deleted) - 1), colour=0xECB72D)
         embed.set_author(name="🏆 EvBOT 🏆", icon_url=str(self.bot.user.avatar_url))
-
         await ctx.send(embed=embed, delete_after=5)
         await ctx.message.delete(delay=10)
+
 
     ########################################
     #### PING
     ########################################
+
     @commands.command(name="ping")
     @commands.cooldown(rate=1, per=30)
     async def ping(self, ctx: commands.Context):
@@ -77,18 +79,22 @@ class SomeCommands(commands.Cog):
         await message.edit(content="", embed=embed, delete_after=10)
         await ctx.message.delete(delay=10)
 
+
     ########################################
     #### SETSTATUS
     ########################################
+
     @commands.command(name="setstatus")
     @commands.cooldown(rate=1, per=30)
     async def setstatus(self, ctx: commands.Context, *, text: str = "EvGaming"):
         await self.bot.change_presence(activity=discord.Game(name=text))
         await ctx.message.delete(delay=10)
 
+
     ########################################
     #### KICK
     ########################################
+
     @commands.command(name="kick")
     async def kick(self, ctx: Context, member: Member):
 
@@ -115,9 +121,11 @@ class SomeCommands(commands.Cog):
         await message.edit(content="Anulowano wyrzucenie.", delete_after=10)
         await ctx.message.delete()
 
+
     ########################################
     #### BAN
     ########################################
+
     @commands.command(name="ban")
     async def ban(self, ctx: Context, member: Member):
 
@@ -144,9 +152,11 @@ class SomeCommands(commands.Cog):
         await message.edit(content="Anulowano banowanie.", delete_after=10)
         await ctx.message.delete()
 
+
     ########################################
     #### WARN
     ########################################
+
     @commands.command(name="warn")
     async def warn(self, ctx: Context, member: Member, text: str):
 
@@ -178,4 +188,4 @@ class SomeCommands(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(SomeCommands(bot))
+    bot.add_cog(Commands(bot))

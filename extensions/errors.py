@@ -1,15 +1,11 @@
 from main import commands
 
 class ErrorHandler(commands.Cog):
-    """A cog for global error handling."""
-
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError):
-        """A global error handler cog."""
-
         if isinstance(error, commands.CommandNotFound):
             return  # Return because we don't want to show an error for every command not found
         elif isinstance(error, commands.CommandOnCooldown):

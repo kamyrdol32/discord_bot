@@ -1,4 +1,0 @@
-
-
-def getWUGrades ():
-    pass
