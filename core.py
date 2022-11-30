@@ -2,11 +2,8 @@ import configparser
 import discord
 
 from discord.ext import commands
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base
 
-engine = create_engine("sqlite://", echo=True, future=True)
-Base = declarative_base()
+from db import metadata, engine
 
 config = configparser.ConfigParser()
 config.read('settings.ini')
@@ -33,6 +30,7 @@ class EvGamingBOT(commands.Bot):
         # Load all slash commands
         self.tree.copy_global_to(guild=discord.Object(id=int(config['APP']['MY_GUILD'])))
         await self.tree.sync(guild=discord.Object(id=int(config['APP']['MY_GUILD'])))
+        metadata.create_all(engine)
 
 
 EvGamingBOT().run(config['APP']['TOKEN'])
