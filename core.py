@@ -3,7 +3,7 @@ import discord
 
 from discord.ext import commands
 
-from db import metadata, engine
+import db
 
 config = configparser.ConfigParser()
 config.read('settings.ini')
@@ -12,6 +12,7 @@ addons = [
     "cog_ext",
     "report_message",
     "report_user",
+    "bulldogjob_scrapper",
 ]
 
 class EvGamingBOT(commands.Bot):
@@ -30,7 +31,6 @@ class EvGamingBOT(commands.Bot):
         # Load all slash commands
         self.tree.copy_global_to(guild=discord.Object(id=int(config['APP']['MY_GUILD'])))
         await self.tree.sync(guild=discord.Object(id=int(config['APP']['MY_GUILD'])))
-        metadata.create_all(engine)
 
 
 EvGamingBOT().run(config['APP']['TOKEN'])

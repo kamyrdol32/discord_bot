@@ -1,16 +1,37 @@
 import configparser
 
-import sqlalchemy as db
+from sqlalchemy import create_engine, Column, Integer, String, select
+from sqlalchemy.orm import declarative_base, Session
 
 config = configparser.ConfigParser()
 config.read('settings.ini')
 
-engine = db.create_engine(config['APP']['DATABASE_URL'])
-conn = engine.connect()
-metadata = db.MetaData()
+engine = create_engine(config['APP']['DATABASE_URL'])
+Base = declarative_base()
+session = Session(engine)
 
-User = db.Table('Users', metadata,
-    db.Column('ID', db.Integer, primary_key=True),
-    db.Column('Name', db.String(255)),
-    db.Column('Warns', db.String(255))
-)
+
+class Job (Base):
+    __tablename__ = 'Jobs'
+    ID = Column(Integer, primary_key=True)
+    Company = Column(String(256))
+    Name = Column(String(256))
+    Salary = Column(String(256))
+    Contract = Column(String(256))
+    Link = Column(String(512))
+
+    def __init__(self, Company, Name, Salary, Contract, Link):
+        self.Company = Company
+        self.Name = Name
+        self.Salary = Salary
+        self.Contract = Contract
+        self.Link = Link
+
+    def __repr__(self):
+        return f"Job('{self.company}', '{self.name}', '{self.salary}', '{self.contract}', '{self.link}')"
+
+    def __str__(self):
+        return f"Job('{self.company}', '{self.name}', '{self.salary}', '{self.contract}', '{self.link}')"
+
+
+Base.metadata.create_all(engine)
