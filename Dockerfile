@@ -15,7 +15,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Run
-CMD ["gunicorn", "app:app"]
+CMD ["python", "core.py"]
 
 # Expose port
 EXPOSE 5003
