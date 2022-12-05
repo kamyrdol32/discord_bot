@@ -1,10 +1,13 @@
+import datetime
+
+import discord
 from discord.ext import commands, tasks
 from bs4 import BeautifulSoup
 import requests
 
 import db
 
-scrapper_channel_id = 1047609196159455282
+scrapper_channel_id = int(1047609196159455282)
 URL = "https://bulldogjob.pl/companies/jobs/s/city,Remote,Krakow/role,support,backend,frontend,fullstack,administrator/experienceLevel,junior"
 
 
@@ -22,6 +25,8 @@ class BullDogJob_Scrapper(commands.Cog):
 
     @tasks.loop(hours=1)
     async def scrapper(self):
+
+
 
         page = requests.get(URL)
         soup = BeautifulSoup(page.content, 'html.parser')
@@ -72,13 +77,29 @@ class BullDogJob_Scrapper(commands.Cog):
                 db.session.add(Job)
                 db.session.commit()
 
+                # Create embed
+                embed = discord.Embed(title=Name, color=discord.Colour.from_rgb(252, 132, 3))
+                embed.add_field(name="Firma", value=Company, inline=False)
+                embed.add_field(name="Wynagrodzenie\n", value=Salary, inline=True)
+                embed.add_field(name="Umowa\n", value=Contract, inline=True)
+                # embed.set_thumbnail(url="https://media-exp1.licdn.com/dms/image/C4E0BAQG4ddNTl5iWiQ/company-logo_200_200/0/1617347974862?e=2147483647&v=beta&t=HSstUTAzpFHdRgJFaiQ-G2h1wPf8DBHcxgy9Kgw-7A8")
+                embed.set_footer(text="BulldogJob.pl")
+                embed.timestamp = datetime.datetime.utcnow()
+
+                # Create view
+                url_view = discord.ui.View()
+                url_view.add_item(discord.ui.Button(label='LINK', style=discord.ButtonStyle.url, url=Link['href']))
+
                 # Send message
-                scrapper_channel = self.bot.get_channel(id(scrapper_channel_id))
-                await scrapper_channel.send(f"New job - {Name} - {Link['href']}")
-                print(scrapper_channel)
+                scrapper_channel = self.bot.get_channel(int(scrapper_channel_id))
+                await scrapper_channel.send(embed=embed, view=url_view)
 
             except Exception as error:
                 print(error)
+
+    @scrapper.before_loop
+    async def before_scrapper(self):
+        await self.bot.wait_until_ready()
 
 async def setup(bot):
     await bot.add_cog(BullDogJob_Scrapper(bot=bot))
