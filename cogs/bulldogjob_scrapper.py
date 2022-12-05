@@ -23,7 +23,7 @@ class BullDogJob_Scrapper(commands.Cog):
         print(f"{self.__class__.__name__} unloaded!")
 
 
-    @tasks.loop(hours=1)
+    @tasks.loop(minutes=15)
     async def scrapper(self):
 
 
@@ -33,8 +33,6 @@ class BullDogJob_Scrapper(commands.Cog):
         results = soup.find(id='__next')
         job_elems = results.find_all("div", ["py-6", "px-8"])
 
-        print("####################")
-
         for job_elem in job_elems:
 
             try:
@@ -42,26 +40,20 @@ class BullDogJob_Scrapper(commands.Cog):
                 Company = job_elem.find("p", class_="text-sm md:text-xxs md:text-center my-2 font-medium text-gray-300")
                 if Company is not None:
                     Company = Company.text.strip()
-                    # print(Company)
 
                 Name = job_elem.find("h3", class_="text-c28 font-medium mb-3 w-full md:hidden")
                 if Name is not None:
                     Name = Name.text.strip()
-                    # print(Name)
 
                 Salary = job_elem.find("div", class_="text-c28 font-medium md:py-1 inline-block")
                 if Salary is not None:
                     Salary = Salary.text.strip()
-                    # print(Salary)
 
                 Contract = job_elem.find("p", class_="font-medium mb-4 md:my-4 flex flex-wrap items-center")
                 if Contract is not None:
                     Contract = Contract.text.strip()
-                    # print(Contract)
 
                 Link = job_elem.find("a", class_="absolute top-0 left-0 w-full h-full")
-                # if Link is not None:
-                    # print(Link['href'])
 
                 # Check if job is already in database
                 stmt = db.select(db.Job).where(db.Job.Link == Link['href'])
