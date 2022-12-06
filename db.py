@@ -14,13 +14,15 @@ session = Session(engine)
 class Job (Base):
     __tablename__ = 'Jobs'
     ID = Column(Integer, primary_key=True)
+    Job_ID = Column(String(256))
     Company = Column(String(256))
     Name = Column(String(256))
     Salary = Column(String(256))
     Contract = Column(String(256))
     Link = Column(String(512))
 
-    def __init__(self, Company, Name, Salary, Contract, Link):
+    def __init__(self, Job_ID, Company, Name, Salary, Contract, Link):
+        self.Job_ID = Job_ID
         self.Company = Company
         self.Name = Name
         self.Salary = Salary
@@ -31,7 +33,7 @@ class Job (Base):
         return f"Job('{self.company}', '{self.name}', '{self.salary}', '{self.contract}', '{self.link}')"
 
     def __str__(self):
-        return f"Job('{self.company}', '{self.name}', '{self.salary}', '{self.contract}', '{self.link}')"
+        return f"{self.company} - {self.name} - {self.salary} - {self.contract} - {self.link}"
 
 
 Base.metadata.create_all(engine)

@@ -12,7 +12,7 @@ addons = [
     "cog_ext",
     "report_message",
     "report_user",
-    "bulldogjob_scrapper",
+    "job_scrapper",
 ]
 
 class EvGamingBOT(commands.Bot):

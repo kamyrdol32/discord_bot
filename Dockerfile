@@ -16,6 +16,3 @@ COPY . .
 
 # Run
 CMD ["python", "core.py"]
-
-# Expose port
-EXPOSE 5003
