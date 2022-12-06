@@ -13,6 +13,7 @@ addons = [
     "report_message",
     "report_user",
     "job_scrapper",
+    "clear"
 ]
 
 class EvGamingBOT(commands.Bot):
