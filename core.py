@@ -1,18 +1,16 @@
 import configparser
 import discord
+import os
 
+from dotenv import load_dotenv
 from discord.ext import commands
 
-import db
-
-config = configparser.ConfigParser()
-config.read('settings.ini')
+load_dotenv()
 
 addons = [
     "cog_ext",
     "report_message",
     "report_user",
-    "job_scrapper",
     "clear"
 ]
 
@@ -30,8 +28,8 @@ class EvGamingBOT(commands.Bot):
             await self.load_extension("cogs." + file)
 
         # Load all slash commands
-        self.tree.copy_global_to(guild=discord.Object(id=int(config['APP']['MY_GUILD'])))
-        await self.tree.sync(guild=discord.Object(id=int(config['APP']['MY_GUILD'])))
+        self.tree.copy_global_to(guild=discord.Object(id=int(os.environ.get("DISCORD_GUILD_ID"))))
+        await self.tree.sync(guild=discord.Object(id=int(os.environ.get("DISCORD_GUILD_ID"))))
 
 
-EvGamingBOT().run(config['APP']['TOKEN'])
+EvGamingBOT().run(os.environ.get("DISCORD_TOKEN"))

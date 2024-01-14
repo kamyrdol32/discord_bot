@@ -15,10 +15,10 @@ Aplikacja (BOT) stworzona na potrzeby nauki Python'a
 
 # Instalacja:
 
-Zmień nazwe pliku z "**settings_example.ini**" na "**settings.ini**" oraz wprowadź token:
+Stworz plik **.env**:
 ```
 # .env
-[APP]
-TOKEN = XYZ
+DISCORD_TOKEN=
+DISCORD_GUILD_ID=
 ```
 

@@ -4,3 +4,4 @@ bs4~=0.0.1
 beautifulsoup4~=4.11.1
 SQLAlchemy~=1.4.44
 MySQL==0.0.3
+python-dotenv==1.0.0
